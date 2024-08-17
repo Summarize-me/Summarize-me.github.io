@@ -38,6 +38,10 @@ const VideoList = () => {
   return (
     <div className="video-list-container">
       <h1 className="page-title">YouTube Videos</h1>
+      <div>
+        <Link className="page-title" to={`/Summary`}>summary</Link>
+      </div>
+
       <div className="video-grid">
         {currentVideos.map((video) => (
           <VideoCard key={video.id} video={video} />
@@ -52,19 +56,21 @@ const VideoList = () => {
 };
 
 const VideoCard = ({ video }) => (
-  <Link to={`/video/${video.id}`} className="video-card">
-    <div className="thumbnail-container">
-      <img src={video.thumbnails[0].url} alt={video.title} className="thumbnail" />
-      <div className="duration">{formatDuration(video.duration)}</div>
-    </div>
-    <div className="video-info">
-      <h2 className="video-title">{video.title}</h2>
-      <p className="video-description">{truncateDescription(video.description, 100)}</p>
-      <div className="video-stats">
-        <span className="views">{formatViews(video.view_count)} views</span>
+  <>
+    <Link to={`/video/${video.id}`} className="video-card">
+      <div className="thumbnail-container">
+        <img src={video.thumbnails[0].url} alt={video.title} className="thumbnail" />
+        <div className="duration">{formatDuration(video.duration)}</div>
       </div>
-    </div>
-  </Link>
+      <div className="video-info">
+        <h2 className="video-title">{video.title}</h2>
+        <p className="video-description">{truncateDescription(video.description, 100)}</p>
+        <div className="video-stats">
+          <span className="views">{formatViews(video.view_count)} views</span>
+        </div>
+      </div>
+    </Link>
+  </>
 );
 
 const PaginationComponent = ({ pageCount, onPageChange }) => (
