@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import './videocontent.css';
 import DOMPurify from 'dompurify';
 import { getSubtitles } from 'youtube-captions-scraper';
@@ -10,6 +10,9 @@ const VideoSummaryDetail = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [aiResponse, setAiResponse] = useState('check settings!');
     const { videoId } = useParams();
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const language = params.get('lang') || 'en'; // Default to 'en' if not provided
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -17,10 +20,11 @@ const VideoSummaryDetail = () => {
             try {
                 getSubtitles({
                     videoID: videoId,
+                    lang: language, // Use selected language
                 }).then(captions => {
                     console.log(captions);
                     let sub = ''
-                    for (var c in captions) {
+                    for (let c in captions) {
                         sub += ' ' + captions[c].text
                     }
                     callAiApi(sub);
@@ -36,7 +40,7 @@ const VideoSummaryDetail = () => {
         };
 
         fetchContent();
-    }, [videoId]);
+    }, [videoId, language]); // Include language in dependency array
 
     const callAiApi = async (transcriptText) => {
         const apiKey = localStorage.getItem('apiKey');

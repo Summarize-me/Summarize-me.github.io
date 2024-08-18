@@ -4,6 +4,7 @@ import './summary.css';
 
 const Summary = () => {
   const [inputValue, setInputValue] = useState('');
+  const [language, setLanguage] = useState('en'); // default to 'en'
 
   return (
     <div className="video-redirect-container">
@@ -16,12 +17,22 @@ const Summary = () => {
           placeholder="Enter video ID"
           className="video-input"
         />
+
+        <select 
+          value={language} 
+          onChange={(e) => setLanguage(e.target.value)} 
+          className="language-select"
+        >
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+        </select>
+
         <Link 
-          to={`/videosummarydetail/${inputValue}`} 
+          to={`/videosummarydetail/${inputValue}?lang=${language}`} 
           className={`video-link ${!inputValue ? 'disabled' : ''}`}
           disabled={!inputValue}
         >
-          summary
+          Summary
         </Link>
       </div>
     </div>
